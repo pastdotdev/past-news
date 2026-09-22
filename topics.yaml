@@ -1,36 +1,45 @@
 # The topics this deployment follows. One topic is one past project; topics.example.yaml is the
 # annotated template. Feed URLs and variable names only: keys come from the environment.
 
-# How often the fetch loop pulls every feed while `newsroom serve` runs.
 fetch_every_minutes: 15
 
 topics:
-  - slug: ai-regulation
-    name: AI regulation
-    # The environment variable holding this topic's project key.
-    api_key_env: NEWSROOM_KEY_AI_REGULATION
+  - slug: ai-companies
+    name: Big AI companies
+    api_key_env: NEWSROOM_KEY_AI_COMPANIES
     feeds:
+      # The companies' own announcements, where they publish a feed.
+      - https://openai.com/news/rss.xml
+      - https://deepmind.google/blog/rss.xml
+      - https://blog.google/technology/ai/rss/
+      - https://blogs.nvidia.com/feed/
+      # The press, filtered by the keywords below.
+      - https://techcrunch.com/category/artificial-intelligence/feed/
       - https://www.theverge.com/rss/ai-artificial-intelligence/index.xml
       - https://feeds.arstechnica.com/arstechnica/technology-lab
-      - https://www.euractiv.com/sections/digital/feed/
-    # Optional. When set, an entry is kept only if its title or summary contains one of these
-    # (case-insensitive). Leave out to keep everything the feeds publish.
+      - https://www.theinformation.com/feed
+    # An entry is kept when its title or summary names one of these (case-insensitive).
     keywords:
-      - regulation
-      - AI Act
-      - regulator
-      - legislation
-      - lawmakers
-
-  - slug: chips
-    name: Semiconductors
-    api_key_env: NEWSROOM_KEY_CHIPS
-    feeds:
-      - https://www.tomshardware.com/feeds/all
-      - https://feeds.arstechnica.com/arstechnica/technology-lab
-    keywords:
-      - chip
-      - semiconductor
-      - TSMC
+      - OpenAI
+      - ChatGPT
+      - Sam Altman
+      - Anthropic
+      - Claude
+      - Dario Amodei
+      - DeepMind
+      - Gemini
+      - Demis Hassabis
+      - Google AI
+      - Meta AI
+      - Llama
+      - Zuckerberg
+      - Microsoft
+      - Copilot
       - Nvidia
-      - foundry
+      - Jensen Huang
+      - xAI
+      - Grok
+      - Mistral
+      - Perplexity
+      - Amazon
+      - Apple Intelligence

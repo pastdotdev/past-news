@@ -22,5 +22,4 @@ jobs:
         env:
           PAST_BASE_URL: ${{ vars.PAST_BASE_URL }}
           NEWSROOM_TOPICS: topics.yaml
-          NEWSROOM_KEY_AI_REGULATION: ${{ secrets.NEWSROOM_KEY_AI_REGULATION }}
-          NEWSROOM_KEY_CHIPS: ${{ secrets.NEWSROOM_KEY_CHIPS }}
+          NEWSROOM_KEY_AI_COMPANIES: ${{ secrets.NEWSROOM_KEY_AI_COMPANIES }}
