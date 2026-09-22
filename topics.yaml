@@ -1,0 +1,36 @@
+# The topics this deployment follows. One topic is one past project; topics.example.yaml is the
+# annotated template. Feed URLs and variable names only: keys come from the environment.
+
+# How often the fetch loop pulls every feed while `newsroom serve` runs.
+fetch_every_minutes: 15
+
+topics:
+  - slug: ai-regulation
+    name: AI regulation
+    # The environment variable holding this topic's project key.
+    api_key_env: NEWSROOM_KEY_AI_REGULATION
+    feeds:
+      - https://www.theverge.com/rss/ai-artificial-intelligence/index.xml
+      - https://feeds.arstechnica.com/arstechnica/technology-lab
+      - https://www.euractiv.com/sections/digital/feed/
+    # Optional. When set, an entry is kept only if its title or summary contains one of these
+    # (case-insensitive). Leave out to keep everything the feeds publish.
+    keywords:
+      - regulation
+      - AI Act
+      - regulator
+      - legislation
+      - lawmakers
+
+  - slug: chips
+    name: Semiconductors
+    api_key_env: NEWSROOM_KEY_CHIPS
+    feeds:
+      - https://www.tomshardware.com/feeds/all
+      - https://feeds.arstechnica.com/arstechnica/technology-lab
+    keywords:
+      - chip
+      - semiconductor
+      - TSMC
+      - Nvidia
+      - foundry
