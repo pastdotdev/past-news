@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Example Tech</title>
+    <link>https://example.tech/</link>
+    <item>
+      <title>EU lawmakers agree on AI Act &amp; enforcement timeline</title>
+      <link>https://example.tech/ai-act-timeline?utm_source=rss&amp;utm_medium=feed#top</link>
+      <description>&lt;p&gt;The European Parliament and member states settled the &lt;b&gt;enforcement&lt;/b&gt; schedule.&lt;/p&gt;</description>
+      <pubDate>Mon, 07 Sep 2026 08:30:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>A review of the new kettle</title>
+      <link>https://example.tech/kettle</link>
+      <description>It boils water.</description>
+      <pubDate>Tue, 08 Sep 2026 10:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Undated item</title>
+      <link>https://example.tech/undated</link>
+      <description>No pubDate on this one.</description>
+    </item>
+    <item>
+      <title>No link</title>
+      <description>Skipped.</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}newsroom{% endblock %}</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <nav class="side">
+    <a class="brand" href="/">newsroom</a>
+    <div class="label">Topics</div>
+    <ul>
+      {% for t in topics %}
+        <li><a href="/t/{{ t.slug }}" {% if topic is defined and topic and t.slug == topic.slug %}class="active"{% endif %}>{{ t.name }}</a></li>
+      {% endfor %}
+    </ul>
+    <footer>Powered by <a href="https://past.dev">past</a></footer>
+  </nav>
+  <main>
+    {% block main %}{% endblock %}
+  </main>
+</body>
+</html>

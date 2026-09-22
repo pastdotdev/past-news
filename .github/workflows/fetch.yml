@@ -1,0 +1,26 @@
+# Keeps every topic fed without a server: pulls the feeds in topics.yaml and pushes the new
+# articles to past on a schedule. `newsroom serve --no-fetch` then only has to read.
+#
+# In your fork: commit your topics.yaml, add one repository secret per topic named exactly as
+# its `api_key_env` (the list under `env:` below must name each of them; GitHub passes no
+# secret a workflow does not ask for), and the variable PAST_BASE_URL if you self-host past.
+name: fetch
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv sync --no-dev
+      - run: uv run newsroom fetch
+        env:
+          PAST_BASE_URL: ${{ vars.PAST_BASE_URL }}
+          NEWSROOM_TOPICS: topics.yaml
+          NEWSROOM_KEY_AI_REGULATION: ${{ secrets.NEWSROOM_KEY_AI_REGULATION }}
+          NEWSROOM_KEY_CHIPS: ${{ secrets.NEWSROOM_KEY_CHIPS }}

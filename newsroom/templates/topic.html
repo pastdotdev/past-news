@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}{{ topic.name }} · newsroom{% endblock %}
+{% block main %}
+<header class="bar">
+  <h1>{{ topic.name }}</h1>
+  <form method="get" action="/t/{{ topic.slug }}" class="asof">
+    {% if question %}<input type="hidden" name="q" value="{{ question }}">{% endif %}
+    <label>as of <input type="date" name="as_of" value="{{ as_of }}" onchange="this.form.submit()"></label>
+    {% if as_of %}<a class="quiet" href="/t/{{ topic.slug }}{% if question %}?q={{ question | urlencode }}{% endif %}">today</a>{% endif %}
+  </form>
+  <form method="post" action="/fetch" class="fetch">
+    <input type="hidden" name="slug" value="{{ topic.slug }}">
+    <button type="submit" {% if run and not run.finished_at %}disabled{% endif %}>Fetch now</button>
+    <span class="meta">
+      {% if run and run.finished_at %}{{ run.finished_at | ago(now) }} · {{ run.changed }} new{% if run.errors %} · <span class="warn">{{ run.errors | length }} error{{ "s" if run.errors | length != 1 }}</span>{% endif %}
+      {% elif run %}fetching…{% else %}not fetched yet{% endif %}
+    </span>
+  </form>
+</header>
+
+<section class="content two">
+  <div class="lead">
+    <form method="get" action="/t/{{ topic.slug }}" class="askbar">
+      {% if as_of %}<input type="hidden" name="as_of" value="{{ as_of }}">{% endif %}
+      <input type="search" name="q" value="{{ question }}" placeholder="Ask about {{ topic.name }}…" aria-label="Question">
+      <button type="submit">Ask</button>
+      {% if question %}<a class="quiet" href="/t/{{ topic.slug }}{% if as_of %}?as_of={{ as_of }}{% endif %}">back to briefing</a>{% endif %}
+    </form>
+
+    {% if error %}
+      <p class="error" role="alert">{{ error }}</p>
+    {% elif lead %}
+      <h2>{% if question %}{{ question }}{% else %}Briefing{% endif %}</h2>
+      <p class="meta">As of {{ lead.as_of | day }}{% if lead.model %} · written by {{ lead.model }}{% else %} · evidence only{% endif %}</p>
+      {% if lead.disposition == "abstained" %}
+        <p class="note">The coverage held here does not answer this. Below is the closest it has.</p>
+      {% elif lead.disposition == "clarification_required" %}
+        <p class="note">The question could be read several ways; the answer says which reading it took.</p>
+      {% endif %}
+      {% if lead_html %}
+        <div class="article">
+          {% for paragraph in lead_html.split("\n\n") %}{% if paragraph.strip() %}<p>{{ paragraph }}</p>{% endif %}{% endfor %}
+        </div>
+      {% else %}
+        <p class="note">This past deployment has no answer model configured, so the reader shows the evidence it found, best match first.</p>
+      {% endif %}
+      {% if lead.stories %}
+        <h3>Sources</h3>
+        <ol class="stories">
+          {% for story in lead.stories | sort(attribute="cited", reverse=True) %}
+            {% include "story.html" %}
+          {% endfor %}
+        </ol>
+      {% elif lead_html %}
+      {% else %}
+        <p class="meta">The project holds nothing about this yet. Fetch the feeds and give past a minute to settle.</p>
+      {% endif %}
+    {% endif %}
+  </div>
+
+  <aside class="timeline">
+    <h3>Timeline</h3>
+    {% if stories %}
+      <ol>
+        {% for story in stories %}
+          <li>
+            <time datetime="{{ story.occurred_at }}">{{ story.occurred_at | day }}</time>
+            {% if story.url %}<a href="{{ story.url }}" rel="noopener">{{ story.headline }}</a>{% else %}<span>{{ story.headline or story.body[:120] }}</span>{% endif %}
+            {% if story.outlet %}<span class="outlet">{{ story.outlet }}</span>{% endif %}
+          </li>
+        {% endfor %}
+      </ol>
+    {% elif not error %}
+      <p class="meta">Nothing yet.</p>
+    {% endif %}
+  </aside>
+</section>
+{% endblock %}

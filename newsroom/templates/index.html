@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}newsroom{% endblock %}
+{% block main %}
+<header class="bar">
+  <h1>Topics</h1>
+  <form method="post" action="/fetch">
+    <button type="submit" {% if state.running %}disabled{% endif %}>{% if state.running %}Fetching…{% else %}Fetch all now{% endif %}</button>
+  </form>
+</header>
+<section class="content">
+  <ul class="topics">
+    {% for t in topics %}
+      {% set run = state.last(t.slug) %}
+      <li>
+        <a class="topic-name" href="/t/{{ t.slug }}">{{ t.name }}</a>
+        <span class="meta">
+          {{ t.feeds | length }} feed{{ "s" if t.feeds | length != 1 }}
+          {% if run and run.finished_at %}
+            · fetched {{ run.finished_at | ago(now) }}: {{ run.kept }} kept, {{ run.changed }} new
+            {% if run.errors %}· <span class="warn">{{ run.errors | length }} error{{ "s" if run.errors | length != 1 }}</span>{% endif %}
+          {% elif run %}
+            · fetching…
+          {% else %}
+            · not fetched yet
+          {% endif %}
+        </span>
+      </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endblock %}

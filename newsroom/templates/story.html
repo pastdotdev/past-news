@@ -1,0 +1,12 @@
+<li id="story-{{ story.number }}" class="story {% if story.cited %}cited{% endif %}">
+  <div class="story-head">
+    <span class="num">{{ story.number }}</span>
+    <span class="kind">{{ story.kind }}</span>
+    <time datetime="{{ story.occurred_at }}">{{ story.occurred_at | day }}</time>
+    {% if story.outlet %}<span class="outlet">{{ story.outlet }}</span>{% endif %}
+  </div>
+  {% if story.headline %}
+    <div class="headline">{% if story.url %}<a href="{{ story.url }}" rel="noopener">{{ story.headline }}</a>{% else %}{{ story.headline }}{% endif %}</div>
+  {% endif %}
+  {% if story.body %}<p class="body">{{ story.body }}</p>{% endif %}
+</li>
